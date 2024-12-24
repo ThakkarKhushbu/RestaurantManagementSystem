@@ -54,28 +54,12 @@ export class ReservationFormComponent implements OnInit {
       return;
     }
     if (this.guestCount > this.maxGuestCount) {
-      this.snackBar.open(
-        `Guest count exceeds the maximum seating capacity of ${this.maxGuestCount}`,
-        'Close',
-        {
-          duration: 3000,
-          verticalPosition: 'top',
-          horizontalPosition: 'right',
-        }
-      );
+      this.errorMessage =  'Guest count exceeds the maximum seating capacity of '+this.maxGuestCount;
       return;
     }
 
     if (this.toTime < this.fromTime) {
-      this.snackBar.open(
-        `From time cannot be greater than To Time.`,
-        'Close',
-        {
-          duration: 3000,
-          verticalPosition: 'top',
-          horizontalPosition: 'right',
-        }
-      );
+      this.errorMessage =  'From time cannot be greater than To Time.';
       return;
     }
 
