@@ -32,4 +32,5 @@ The **Restaurant Management System** is a simple web application built with **An
 - Run Npm Start
 
 **Demo**
+https://www.loom.com/share/40205cf4fc8e4513a62ea8b62a8ce071
 
