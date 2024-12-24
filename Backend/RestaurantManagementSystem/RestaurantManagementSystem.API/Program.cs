@@ -11,5 +11,6 @@ _ = app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
+app.UseCors();
 app.MapControllers();
 app.Run();

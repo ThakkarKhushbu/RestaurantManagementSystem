@@ -20,6 +20,16 @@ namespace RestaurantManagementSystem.API.Helper
             _ = builder.Services.AddEndpointsApiExplorer();
             _ = builder.Services.AddSwaggerGen();
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(policy =>
+                {
+                    policy.AllowAnyOrigin()        // Allow any origin
+                          .AllowAnyMethod()        // Allow any HTTP method (GET, POST, etc.)
+                          .AllowAnyHeader();       // Allow any header
+                });
+            });
+
             //Registered sql server
             _ = builder.Services.AddDbContext<DBContext>(options => options.UseSqlServer(
                             builder.Configuration.GetConnectionString(Constants.DefaultConnection!)
