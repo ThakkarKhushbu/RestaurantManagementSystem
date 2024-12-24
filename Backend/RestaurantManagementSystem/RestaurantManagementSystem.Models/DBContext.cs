@@ -78,7 +78,7 @@ namespace RestaurantManagementSystem.Models
                     Status = ReservationStatus.Booked,
                     TableId = table1Id,
                     CreatedAt = DateTime.UtcNow,
-                    UpdatedAt = DateTime.UtcNow                    
+                    UpdatedAt = DateTime.UtcNow
                 },
                 new Reservation
                 {

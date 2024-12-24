@@ -14,8 +14,8 @@ namespace RestaurantManagementSystem.Test.Setup
 
             public static List<Table> GetSampleTables()
             {
-                return new List<Table>
-            {
+                return
+            [
                 new()
                 {
                     Id = TableId1,
@@ -36,7 +36,7 @@ namespace RestaurantManagementSystem.Test.Setup
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow
                 }
-            };
+            ];
             }
 
             public static Filters GetFilterWithAllParameters()
@@ -68,7 +68,7 @@ namespace RestaurantManagementSystem.Test.Setup
                 {
                     Date = DateOnly.FromDateTime(DateTime.Today),
                     FromTime = new TimeOnly(14, 0),
-                    ToTime = new TimeOnly(12, 0), // Invalid: ToTime < FromTime
+                    ToTime = new TimeOnly(12, 0), 
                     PageNumber = 1,
                     PageSize = 10
                 };
@@ -83,8 +83,8 @@ namespace RestaurantManagementSystem.Test.Setup
 
             public static List<Reservation> GetSampleReservations()
             {
-                return new List<Reservation>
-            {
+                return
+            [
                 new()
                 {
                     Id = ReservationId1,
@@ -113,7 +113,7 @@ namespace RestaurantManagementSystem.Test.Setup
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow
                 }
-            };
+            ];
             }
 
             public static CreateReservationDto GetNewReservation()

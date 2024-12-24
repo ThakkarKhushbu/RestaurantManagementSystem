@@ -26,9 +26,9 @@ namespace RestaurantManagementSystem.Test.TestCase
         [Fact]
         public async Task GetAvailableTables_WithInvalidFilter_ShouldThrowException()
         {
-            var filter = TestDataProvider.TableData.GetInvalidFilter();
+            Models.Filters.Filters filter = TestDataProvider.TableData.GetInvalidFilter();
 
-            await _tableService.Invoking(s => s.GetTablesAsync(filter))
+            _ = await _tableService.Invoking(s => s.GetTablesAsync(filter))
                 .Should().ThrowAsync<Exception>()
                 .WithMessage("ToTime must be greater than FromTime.");
         }
@@ -36,25 +36,25 @@ namespace RestaurantManagementSystem.Test.TestCase
         [Fact]
         public async Task GetTableById_WithExistingId_ShouldReturnTable()
         {
-            var existingTable = TestDataProvider.TableData.GetSampleTables().First();
-            _tableRepository.Setup(r => r.GetByIdAsync(existingTable.Id))
+            Table existingTable = TestDataProvider.TableData.GetSampleTables().First();
+            _ = _tableRepository.Setup(r => r.GetByIdAsync(existingTable.Id))
                 .ReturnsAsync(existingTable);
 
-            var result = await _tableService.GetTableByIdAsync(existingTable.Id);
+            Table result = await _tableService.GetTableByIdAsync(existingTable.Id);
 
-            result.Should().NotBeNull();
-            result.Id.Should().Be(existingTable.Id);
+            _ = result.Should().NotBeNull();
+            _ = result.Id.Should().Be(existingTable.Id);
         }
 
         [Fact]
         public async Task GetTableById_WithNonExistentId_ShouldThrowException()
         {
-            var nonExistentId = Guid.Empty;
+            Guid nonExistentId = Guid.Empty;
 
-            _tableRepository.Setup(r => r.GetByIdAsync(nonExistentId))
+            _ = _tableRepository.Setup(r => r.GetByIdAsync(nonExistentId))
                 .ReturnsAsync((Table)null);
 
-            await _tableService.Invoking(s => s.GetTableByIdAsync(nonExistentId))
+            _ = await _tableService.Invoking(s => s.GetTableByIdAsync(nonExistentId))
                 .Should().ThrowAsync<Exception>();
         }
     }

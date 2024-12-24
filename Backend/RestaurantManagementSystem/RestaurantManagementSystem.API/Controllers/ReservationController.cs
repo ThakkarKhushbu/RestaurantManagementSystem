@@ -41,7 +41,7 @@ namespace RestaurantManagementSystem.API.Controllers
         }
 
         [HttpDelete(Constants.Cancel)]
-        public async Task<IActionResult> CancelReservation([FromQuery]Guid id)
+        public async Task<IActionResult> CancelReservation([FromQuery] Guid id)
         {
             try
             {

@@ -20,13 +20,13 @@ namespace RestaurantManagementSystem.API.Helper
             _ = builder.Services.AddEndpointsApiExplorer();
             _ = builder.Services.AddSwaggerGen();
 
-            builder.Services.AddCors(options =>
+            _ = builder.Services.AddCors(options =>
             {
                 options.AddDefaultPolicy(policy =>
                 {
-                    policy.AllowAnyOrigin()        // Allow any origin
-                          .AllowAnyMethod()        // Allow any HTTP method (GET, POST, etc.)
-                          .AllowAnyHeader();       // Allow any header
+                    _ = policy.AllowAnyOrigin()        
+                          .AllowAnyMethod()        
+                          .AllowAnyHeader();       
                 });
             });
 
