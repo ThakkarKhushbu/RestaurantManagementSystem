@@ -24,9 +24,9 @@ namespace RestaurantManagementSystem.API.Helper
             {
                 options.AddDefaultPolicy(policy =>
                 {
-                    _ = policy.AllowAnyOrigin()        
-                          .AllowAnyMethod()        
-                          .AllowAnyHeader();       
+                    _ = policy.AllowAnyOrigin()
+                          .AllowAnyMethod()
+                          .AllowAnyHeader();
                 });
             });
 

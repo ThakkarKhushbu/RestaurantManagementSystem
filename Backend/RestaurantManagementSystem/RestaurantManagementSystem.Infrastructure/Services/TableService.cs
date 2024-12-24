@@ -65,6 +65,8 @@ namespace RestaurantManagementSystem.Infrastructure.Services
                 IQueryable<Table> tableQuery = tableRepository.GetQueryable();
                 IQueryable<Reservation> reservationQuery = reservationRepository.GetQueryable();
 
+                List<Reservation> reservedTables = [];
+
                 if (filter.MinSeatingCapacity.HasValue)
                 {
                     tableQuery = tableQuery.Where(t => t.SeatingCapacity >= filter.MinSeatingCapacity.Value);
@@ -77,27 +79,35 @@ namespace RestaurantManagementSystem.Infrastructure.Services
                         throw new Exception("ToTime must be greater than FromTime.");
                     }
 
-                    List<Guid?> reservedTableIds = reservationRepository.GetQueryable()
+                    reservedTables = reservationRepository.GetQueryable()
                         .Where(r =>
                             r.ReservationDate == filter.Date.Value &&
                             r.Status != ReservationStatus.Cancelled &&
                             ((r.FromTime <= filter.FromTime.Value && r.ToTime > filter.FromTime.Value) ||
                              (r.FromTime < filter.ToTime.Value && r.ToTime >= filter.ToTime.Value) ||
                              (r.FromTime >= filter.FromTime.Value && r.ToTime <= filter.ToTime.Value)))
-                        .Select(r => r.TableId)
                         .ToList();
 
-                    tableQuery = tableQuery.Where(t => !reservedTableIds.Contains(t.Id));
+                    tableQuery = tableQuery.Where(t => reservedTables.Select(x => x.TableId).Contains(t.Id));
+                }
+                else
+                {
+                    reservedTables = [.. reservationRepository.GetQueryable().Where(x=>
+                    tableQuery.Any(y=>y.Id==x.TableId ))];
                 }
 
-                List<TableWithReservationsDto> tables = tableQuery.Select(x => new TableWithReservationsDto()
+                List<TableWithReservationsDto> tables = [.. tableQuery.Select(x => new TableWithReservationsDto()
                 {
                     Id = x.Id,
                     Location = x.Location,
                     TableNumber = x.TableNumber,
-                    SeatingCapacity = x.SeatingCapacity,
-                    Reservations = reservationQuery.Where(r => r.TableId.HasValue && r.TableId.Equals(x.Id)).ToList()
-                }).ToList();
+                    SeatingCapacity = x.SeatingCapacity
+                })];
+
+                foreach (TableWithReservationsDto table in tables)
+                {
+                    table.Reservations = reservedTables.Where(x => x.TableId == table.Id).ToList();
+                }
 
                 return tables;
             }

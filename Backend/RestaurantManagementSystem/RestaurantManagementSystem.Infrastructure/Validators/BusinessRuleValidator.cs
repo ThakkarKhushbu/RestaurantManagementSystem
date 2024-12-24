@@ -77,7 +77,7 @@ namespace RestaurantManagementSystem.Infrastructure.Validators
                 throw new Exception($"To time should be greater than current date and time.");
             }
 
-            if(reservationTo <= reservationFrom)
+            if (reservationTo <= reservationFrom)
             {
                 throw new Exception($"To time should be greater than from time.");
             }

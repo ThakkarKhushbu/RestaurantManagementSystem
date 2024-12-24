@@ -68,7 +68,7 @@ namespace RestaurantManagementSystem.Test.Setup
                 {
                     Date = DateOnly.FromDateTime(DateTime.Today),
                     FromTime = new TimeOnly(14, 0),
-                    ToTime = new TimeOnly(12, 0), 
+                    ToTime = new TimeOnly(12, 0),
                     PageNumber = 1,
                     PageSize = 10
                 };
