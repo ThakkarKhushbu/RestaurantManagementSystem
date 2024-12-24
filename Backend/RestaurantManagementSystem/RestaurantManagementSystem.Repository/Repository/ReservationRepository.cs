@@ -1,5 +1,4 @@
-﻿using Braintree.Exceptions;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using RestaurantManagementSystem.Models;
 using RestaurantManagementSystem.Models.DTOs;
 using RestaurantManagementSystem.Models.Enums;
@@ -14,7 +13,7 @@ namespace RestaurantManagementSystem.Repository.Repository
         {
             try
             {
-                Table? table = await tableRepository.GetById(dto.TableId) ?? throw new NotFoundException($"Table with ID {dto.TableId} not found or is inactive");
+                Table? table = await tableRepository.GetById(dto.TableId) ?? throw new Exception($"Table with ID {dto.TableId} not found or is inactive");
                 
                 if (table.SeatingCapacity < dto.GuestCount)
                 {
