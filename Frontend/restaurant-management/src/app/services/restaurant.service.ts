@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { TableResponse} from '../models/tableResponse';
 import { AddReservation } from '../models/addReservation';
 import { environment } from '../environment-config';
+import { Table } from '../models/table';
 
 @Injectable({
   providedIn: 'root'
@@ -14,15 +15,8 @@ export class RestaurantService {
   private endpoints = environment.apiEndpoints;
   constructor(private http: HttpClient) { }
   
-  getTables(requestBody: {
-    date?: string;
-    fromTime?: string;
-    toTime?: string;
-    minSeatingCapacity: number;
-    pageNumber: number;
-    pageSize: number;
-  }): Observable<TableResponse> {
-    return this.http.post<TableResponse>(`${this.baseUrl}${this.endpoints.getTableData}`, requestBody);
+  getTables(){
+    return this.http.get<Table[]>(`${this.baseUrl}${this.endpoints.getTableData}`);
   }
   
   submitReservation(reservation: AddReservation): Observable<any> {
