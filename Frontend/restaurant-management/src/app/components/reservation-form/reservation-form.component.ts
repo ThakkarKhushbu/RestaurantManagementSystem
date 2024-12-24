@@ -50,9 +50,9 @@ export class ReservationFormComponent implements OnInit {
   }
 
   submitForm(form:NgForm): void {
-    if(form.invalid){
-      return;
-    }
+    // if(form.invalid){
+    //   return;
+    // }
     if (this.guestCount > this.maxGuestCount) {
       this.errorMessage =  'Guest count exceeds the maximum seating capacity of '+this.maxGuestCount;
       return;
