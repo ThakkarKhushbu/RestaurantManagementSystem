@@ -1,0 +1,56 @@
+<form (ngSubmit)="submitForm()" #reservationForm="ngForm" class="reservation-form">
+  <div class="k-form-field">
+  <label for="tableId">Table ID:</label>
+  <input id="tableId" [value]="tableNumber" disabled class="k-textbox" />
+  </div>
+   
+    <div class="k-form-field">
+  <label for="customerName">Customer Name:</label>
+  <input id="customerName" type="text" class="k-textbox" [(ngModel)]="customerName" name="customerName" required />
+  <div *ngIf="reservationForm.submitted && !customerName" class="error-message">
+        Customer Name is required.
+  </div>
+  </div>
+   
+    <div class="k-form-field">
+  <label for="contactNumber">Contact Number:</label>
+  <input id="contactNumber" type="text" class="k-textbox" [(ngModel)]="contactNumber" name="contactNumber" required />
+  <div *ngIf="reservationForm.submitted && !contactNumber" class="error-message">
+        Contact Number is required.
+  </div>
+  </div>
+   
+    <div class="k-form-field">
+  <label for="guestCount">Guest Count:</label>
+  <input id="guestCount" type="number" class="k-textbox" [(ngModel)]="guestCount" name="guestCount" required />
+  <div *ngIf="reservationForm.submitted && !guestCount" class="error-message">
+        Guest Count is required.
+  </div>
+  </div>
+   
+    <div class="k-form-field">
+  <label for="reservationDate">Reservation Date:</label>
+  <input id="reservationDate" type="date" class="k-textbox" [(ngModel)]="reservationDate" name="reservationDate" required />
+  <div *ngIf="reservationForm.submitted && !reservationDate" class="error-message">
+        Reservation Date is required.
+  </div>
+  </div>
+   
+    <div class="k-form-field">
+  <label for="fromTime">From Time:</label>
+  <input id="fromTime" type="time" class="k-textbox" [(ngModel)]="fromTime" name="fromTime" required />
+  <div *ngIf="reservationForm.submitted && !fromTime" class="error-message">
+        From Time is required.
+  </div>
+  </div>
+   
+    <div class="k-form-field">
+  <label for="toTime">To Time:</label>
+  <input id="toTime" type="time" class="k-textbox" [(ngModel)]="toTime" name="toTime" required />
+  <div *ngIf="reservationForm.submitted && !toTime" class="error-message">
+        To Time is required.
+  </div>
+  </div>
+   
+    <button type="submit" kendoButton class="submit-button">Submit</button>
+  </form>
