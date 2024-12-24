@@ -17,6 +17,11 @@ namespace RestaurantManagementSystem.Infrastructure.Services
         {
             try
             {
+                businessValidator.ValidateReservationTimeAsync(
+                    dto.ReservationDate,
+                    dto.FromTime,
+                    dto.ToTime);
+
                 await businessValidator.ValidateTableAvailabilityAsync(
                     dto.TableId,
                     dto.ReservationDate,
@@ -96,8 +101,8 @@ namespace RestaurantManagementSystem.Infrastructure.Services
             try
             {
                 await businessValidator.ValidateReservationCancellationAsync(id);
-                
-                Reservation? reservation = await reservationRepository.GetByIdAsync(id) 
+
+                Reservation? reservation = await reservationRepository.GetByIdAsync(id)
                     ?? throw new Exception($"No such reservation found for id {id}");
 
                 reservation.Status = ReservationStatus.Cancelled;

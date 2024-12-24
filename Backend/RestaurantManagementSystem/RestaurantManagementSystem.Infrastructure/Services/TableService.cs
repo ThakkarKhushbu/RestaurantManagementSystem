@@ -5,7 +5,6 @@ using RestaurantManagementSystem.Models.DTOs;
 using RestaurantManagementSystem.Models.Enums;
 using RestaurantManagementSystem.Models.Filters;
 using RestaurantManagementSystem.Models.Models;
-using System.Linq;
 
 namespace RestaurantManagementSystem.Infrastructure.Services
 {
@@ -73,7 +72,7 @@ namespace RestaurantManagementSystem.Infrastructure.Services
 
                 if (filter.Date.HasValue && filter.FromTime.HasValue && filter.ToTime.HasValue)
                 {
-                    if(filter.ToTime <= filter.FromTime)
+                    if (filter.ToTime <= filter.FromTime)
                     {
                         throw new Exception("ToTime must be greater than FromTime.");
                     }
@@ -91,7 +90,7 @@ namespace RestaurantManagementSystem.Infrastructure.Services
                     tableQuery = tableQuery.Where(t => !reservedTableIds.Contains(t.Id));
                 }
 
-                var tables = tableQuery.Select(x => new TableWithReservationsDto()
+                List<TableWithReservationsDto> tables = tableQuery.Select(x => new TableWithReservationsDto()
                 {
                     Id = x.Id,
                     Location = x.Location,

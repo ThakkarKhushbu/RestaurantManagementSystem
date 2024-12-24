@@ -39,35 +39,29 @@ namespace RestaurantManagementSystem.Test.TestCase
         [Fact]
         public async Task CreateReservation_WithValidData_ShouldCreateReservation()
         {
-            var newReservation = TestDataProvider.ReservationData.GetNewReservation();
-            var table = TestDataProvider.TableData.GetSampleTables()
+            Models.DTOs.CreateReservationDto newReservation = TestDataProvider.ReservationData.GetNewReservation();
+            Table table = TestDataProvider.TableData.GetSampleTables()
                 .First(t => t.Id == newReservation.TableId);
 
-            //_tableService.Setup(s => s.IsTableAvailableAsync(
-            //    newReservation.TableId,
-            //    newReservation.ReservationDate,
-            //    newReservation.FromTime,
-            //    newReservation.ToTime))
-            //    .ReturnsAsync(true);
 
-            _reservationRepository.Setup(r => r.AddAsync(It.IsAny<Reservation>()))
+            _ = _reservationRepository.Setup(r => r.AddAsync(It.IsAny<Reservation>()))
                 .ReturnsAsync((Reservation r) => r);
 
-            var result = await _reservationService.CreateReservationAsync(newReservation);
+            Reservation result = await _reservationService.CreateReservationAsync(newReservation);
 
-            result.Should().NotBeNull();
-            result.Status.Should().Be(ReservationStatus.Booked);
-            result.CustomerName.Should().Be(newReservation.CustomerName);
+            _ = result.Should().NotBeNull();
+            _ = result.Status.Should().Be(ReservationStatus.Booked);
+            _ = result.CustomerName.Should().Be(newReservation.CustomerName);
         }
 
         [Fact]
         public async Task CancelReservation_WithValidReservation_ShouldCancelReservation()
         {
-            var existingReservation = TestDataProvider.ReservationData.GetSampleReservations().First();
-            _reservationRepository.Setup(r => r.GetByIdAsync(existingReservation.Id))
+            Reservation existingReservation = TestDataProvider.ReservationData.GetSampleReservations().First();
+            _ = _reservationRepository.Setup(r => r.GetByIdAsync(existingReservation.Id))
                 .ReturnsAsync(existingReservation);
 
-            await _reservationService.CancelReservationAsync(existingReservation.Id);
+            _ = await _reservationService.CancelReservationAsync(existingReservation.Id);
 
             _reservationRepository.Verify(r => r.UpdateAsync(It.Is<Reservation>(
                 r => r.Id == existingReservation.Id && r.Status == ReservationStatus.Cancelled
@@ -77,11 +71,11 @@ namespace RestaurantManagementSystem.Test.TestCase
         [Fact]
         public async Task CancelReservation_WithNonExistentReservation_ShouldThrowException()
         {
-            var nonExistentId = TestDataProvider.ReservationData.NonExistentReservationId;
-            _reservationRepository.Setup(r => r.GetByIdAsync(nonExistentId))
+            Guid nonExistentId = TestDataProvider.ReservationData.NonExistentReservationId;
+            _ = _reservationRepository.Setup(r => r.GetByIdAsync(nonExistentId))
                 .ReturnsAsync((Reservation)null);
 
-            await _reservationService.Invoking(s => s.CancelReservationAsync(nonExistentId))
+            _ = await _reservationService.Invoking(s => s.CancelReservationAsync(nonExistentId))
                 .Should().ThrowAsync<Exception>();
         }
     }

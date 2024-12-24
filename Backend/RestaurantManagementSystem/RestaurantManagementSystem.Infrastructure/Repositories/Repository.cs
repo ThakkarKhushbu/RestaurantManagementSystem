@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using RestaurantManagementSystem.Infrastructure.Repositories.Interfaces;
 using RestaurantManagementSystem.Infrastructure.Services.Interfaces;
 using RestaurantManagementSystem.Models;

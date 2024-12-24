@@ -7,5 +7,7 @@
         Task ValidateTableCapacityAsync(Guid tableId, int guestCount);
 
         Task ValidateReservationCancellationAsync(Guid reservationId);
+
+        void ValidateReservationTimeAsync(DateOnly date, TimeOnly fromTime, TimeOnly toTime);
     }
 }
