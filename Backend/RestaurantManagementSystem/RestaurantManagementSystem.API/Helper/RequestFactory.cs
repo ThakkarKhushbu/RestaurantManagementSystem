@@ -1,32 +1,40 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using RestaurantManagementSystem.Infrastructure.Repositories;
+using RestaurantManagementSystem.Infrastructure.Repositories.Interfaces;
+using RestaurantManagementSystem.Infrastructure.Services;
+using RestaurantManagementSystem.Infrastructure.Services.Interfaces;
+using RestaurantManagementSystem.Infrastructure.Validators;
+using RestaurantManagementSystem.Infrastructure.Validators.Interfaces;
 using RestaurantManagementSystem.Models;
 using RestaurantManagementSystem.Models.Constants;
-using RestaurantManagementSystem.Repository.Interface;
-using RestaurantManagementSystem.Repository.Repository;
-using RestaurantManagementSystem.Service.Interface;
-using RestaurantManagementSystem.Service.Service;
 
 namespace RestaurantManagementSystem.API.Helper
 {
     internal static class RequestFactory
     {
-        internal static void RegisterServices(this WebApplicationBuilder  builder)
+        internal static void RegisterServices(this WebApplicationBuilder builder)
         {
-            builder.Services.AddControllers();
+            _ = builder.Services.AddControllers();
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            _ = builder.Services.AddEndpointsApiExplorer();
+            _ = builder.Services.AddSwaggerGen();
 
             //Registered sql server
-            builder.Services.AddDbContext<DBContext>(options => options.UseSqlServer(
-                            builder.Configuration.GetConnectionString($"{Constants.DefaultConnection}")
+            _ = builder.Services.AddDbContext<DBContext>(options => options.UseSqlServer(
+                            builder.Configuration.GetConnectionString(Constants.DefaultConnection!)
                             ));
 
-            //Service and Repository
-            builder.Services.AddScoped<ITableService, TableService>();
-            builder.Services.AddScoped<IReservationService, ReservationService>();
-            builder.Services.AddScoped<ITableRepository, TableRepository>();
-            builder.Services.AddScoped<IReservationRepository, ReservationRepository>();           
+            //Services
+            _ = builder.Services.AddScoped<ILogService, LogService>();
+            _ = builder.Services.AddScoped<ITableService, TableService>();
+            _ = builder.Services.AddScoped<IReservationService, ReservationService>();
+
+            //Validator
+            _ = builder.Services.AddScoped<IBusinessRuleValidator, BusinessRuleValidator>();
+
+            //Repository
+            _ = builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         }
     }
 }
