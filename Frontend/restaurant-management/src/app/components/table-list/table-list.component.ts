@@ -35,20 +35,26 @@ export class TableListComponent implements OnInit {
   }
 
   loadItems(capacity?: number): void {
-    const requestBody = {
-      minSeatingCapacity: capacity || 0, // If capacity is provided, use it; otherwise, use 0
-      pageNumber: 1,
-      pageSize: 10,
-    };
+    this.restaurantService.getTables().subscribe({
+      next: (response) => {
+        // Apply optional filtering by seating capacity
+        const filteredData = capacity
+          ? response.filter((table) => table.seatingCapacity >= capacity)
+          : response;
   
-    this.restaurantService.getTables(requestBody).subscribe(response => {
-      // Mapping the response data to match Kendo Grid's format
-      this.gridData = {
-        data: response.items, // Using the items from the response
-        total: response.totalItems // Total number of items
-      };
+        // Format the data for Kendo Grid
+        this.gridData = {
+          data: filteredData,
+          total: filteredData.length // Optional, if you need total records
+        };
+      },
+      error: (error) => {
+        console.error('Error loading tables:', error);
+        // Optionally, handle error UI or logging here
+      }
     });
   }
+  
   
   openDialog(dataItem:Table): void {
     this.dialogRef =  this.dialogService.open({

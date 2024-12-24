@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { DialogRef, DialogsModule } from "@progress/kendo-angular-dialog";
 import { RestaurantService } from '../../services/restaurant.service';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AddReservation } from '../../models/addReservation';
 import { Table } from '../../models/table';
@@ -26,7 +26,9 @@ export class ReservationFormComponent implements OnInit {
   fromTime: string = '';
   toTime: string = '';
   maxGuestCount: number = 0;
-  minDate: string = ''; // Minimum date for reservation
+  minDate: string = ''; 
+  errorMessage: string = ''; 
+
 
   constructor(
     private restaurantService: RestaurantService, 
@@ -47,7 +49,10 @@ export class ReservationFormComponent implements OnInit {
     }
   }
 
-  submitForm(): void {
+  submitForm(form:NgForm): void {
+    if(form.invalid){
+      return;
+    }
     if (this.guestCount > this.maxGuestCount) {
       this.snackBar.open(
         `Guest count exceeds the maximum seating capacity of ${this.maxGuestCount}`,
@@ -88,25 +93,18 @@ export class ReservationFormComponent implements OnInit {
       next: (response) => {
         this.snackBar.open(
           `Table reserved successfully.`,
-          'Close',
+          'X',
           {
             duration: 3000,
             verticalPosition: 'top',
             horizontalPosition: 'right',
+            panelClass: ['custom-snackbar'] 
           }
         );
         this.dialogRef.close(); 
       },
       error: (error) => {
-        this.snackBar.open(
-          error,
-          'Close',
-          {
-            duration: 3000,
-            verticalPosition: 'top',
-            horizontalPosition: 'right',
-          }
-        );
+        this.errorMessage = error.error ? error.error : 'An error occurred, please try again later.';
       }
     });
   }

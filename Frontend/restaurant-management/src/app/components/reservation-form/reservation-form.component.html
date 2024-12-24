@@ -1,4 +1,7 @@
-<form (ngSubmit)="submitForm()" #reservationForm="ngForm" class="reservation-form">
+<div *ngIf="errorMessage" class="error-message" style="color: red; font-size: large;">
+  {{ errorMessage }}
+</div>
+<form (ngSubmit)="submitForm(reservationForm)" #reservationForm="ngForm" class="reservation-form">
   <div class="k-form-field">
   <label for="tableId">Table ID:</label>
   <input id="tableId" [value]="tableNumber" disabled class="k-textbox" />
