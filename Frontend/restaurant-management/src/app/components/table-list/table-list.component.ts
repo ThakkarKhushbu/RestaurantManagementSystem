@@ -80,7 +80,6 @@ export class TableListComponent implements OnInit {
     }
     
   submitForm(form:NgForm): void {
-    debugger
       if(form.invalid){
         return;
       }
