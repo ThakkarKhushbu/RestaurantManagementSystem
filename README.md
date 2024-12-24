@@ -1,26 +1,33 @@
-**Restaurant Management System**
----------
-Resturant Management System is small web application to built in Angular and .Net core. System provides reservation for resturant table online.
+# **Restaurant Management System**
 
-**List of implemented features**
-------------
-Table Management : Display list of table along with location & Sitting capacity for resturant along with Filters 
-Reservation Management : Allow user to book table for no of people on given date and time 
-Used Code first approach for creating databse and databse seeding 
-Unit Tests: Write comprehensive unit tests to cover business rules and key functionality.
+The **Restaurant Management System** is a simple web application built with **Angular** for the frontend and **.NET Core** for the backend. It provides an online reservation system for restaurant tables, allowing users to book tables based on seating capacity, date, and time.
 
-**Setup and Configuration**
-Install the required dependencies: .NET SDK, Entity Framework Core, Latest node modules, etc
-Clone the repository: git clone [https://github.com/thebhavikthakkar/LogisticBookingSystemTest.git](https://github.com/ThakkarKhushbu/RestaurantManagementSystem)
-API Code
-Navigate to the project directory: cd Backend\RestaurantManagementSystem
-Configure the database connection in the appsettings.json file.
-Run database migrations to create the necessary tables: dotnet ef database update, In case you would like to setup database directly via script then Navigate to folder - DbScript amd execute that script.
-Build the project: dotnet build
-Run the application: dotnet run
-Front End 
-Navigate to the project directory: cd Frontend\restaurant-management
-Run Npm i : It will imstall node modules based on package.json file configuration.
-Run Npm Start
+## **Implemented Features**
+
+- **Table Management**: Displays a list of tables along with their locations and seating capacities, with filtering options.
+- **Reservation Management**: Allows users to book tables for a specific number of people at a given date and time.
+- **Code-First Approach**: Uses Entity Framework Core's code-first approach for creating the database and seeding initial data.
+- **Unit Tests**: Includes comprehensive unit tests to validate business rules and key functionalities.
+
+## **Setup and Configuration**
+### Backend Setup
+
+1. **Install the required dependencies**:
+   - Install the **.NET SDK**, **Entity Framework Core**, and the latest **Node modules**.
+
+2. **Clone the repository**:
+   ```bash
+   git clone https://github.com/ThakkarKhushbu/RestaurantManagementSystem.git
+ **API Code**
+- Navigate to the project directory: cd Backend\RestaurantManagementSystem
+- Configure the database connection in the appsettings.json file.
+- Run database migrations to create the necessary tables: dotnet ef database update, In case you would like to setup database directly via script then Navigate to folder - DbScript amd execute that script.
+- Build the project: dotnet build
+- Run the application: dotnet run
+### Front End Setup
+- Navigate to the project directory: cd Frontend\restaurant-management
+- Run Npm i : It will install node modules based on package.json file configuration.
+- Run Npm Start
 
 **Demo**
+
