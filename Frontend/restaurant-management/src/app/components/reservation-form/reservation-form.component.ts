@@ -1,66 +1,113 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { DialogsModule } from "@progress/kendo-angular-dialog";
+import { Component, OnInit } from '@angular/core';
+import { DialogRef, DialogsModule } from "@progress/kendo-angular-dialog";
 import { RestaurantService } from '../../services/restaurant.service';
-import { Subscription } from 'rxjs';
-import { FormsModule, NgForm } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AddReservation } from '../../models/addReservation';
+import { Table } from '../../models/table';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-reservation-form',
-  imports: [CommonModule,DialogsModule,FormsModule,HttpClientModule],
-  providers:[RestaurantService],
+  imports: [CommonModule, DialogsModule, FormsModule, HttpClientModule, MatSnackBarModule],
+  providers: [RestaurantService],
   templateUrl: './reservation-form.component.html',
-  styleUrl: './reservation-form.component.scss',
+  styleUrls: ['./reservation-form.component.scss'],
   standalone: true
 })
-export class ReservationFormComponent implements OnInit,OnDestroy {
-  tableNumber: number =0;
-  tableID : string='';
+export class ReservationFormComponent implements OnInit {
+  tableNumber: number = 0;
+  tableID: string = '';
   customerName: string = '';
   contactNumber: string = '';
   guestCount: number = 0;
   reservationDate: string = '';
   fromTime: string = '';
   toTime: string = '';
-  maxGuestCount :number=0;
-  private tableDataSubscription: Subscription;
+  maxGuestCount: number = 0;
+  minDate: string = ''; // Minimum date for reservation
 
-  constructor(private route: ActivatedRoute,private restaurantService : RestaurantService) {
-    this.tableDataSubscription = this.restaurantService.dataItem$.subscribe(dataItem => {
-      if(dataItem){
-        this.tableNumber = dataItem.tableNumber;
-        this.tableID = dataItem.id
-        this.maxGuestCount = dataItem.seatingCapacity;
-      }
-    });
-  }
+  constructor(
+    private restaurantService: RestaurantService, 
+    private snackBar: MatSnackBar,
+    private dialogRef: DialogRef
+  ) {}
 
   ngOnInit(): void {
+    const today = new Date();
+    this.minDate = today.toISOString().split('T')[0]; // Format: YYYY-MM-DD
   }
-  
+
+  setTableData(dataItem: Table): void {
+    if (dataItem) {
+      this.tableNumber = dataItem.tableNumber;
+      this.tableID = dataItem.id;
+      this.maxGuestCount = dataItem.seatingCapacity;
+    }
+  }
+
   submitForm(): void {
-    debugger
+    if (this.guestCount > this.maxGuestCount) {
+      this.snackBar.open(
+        `Guest count exceeds the maximum seating capacity of ${this.maxGuestCount}`,
+        'Close',
+        {
+          duration: 3000,
+          verticalPosition: 'top',
+          horizontalPosition: 'right',
+        }
+      );
+      return;
+    }
+
+    if (this.toTime < this.fromTime) {
+      this.snackBar.open(
+        `From time cannot be greater than To Time.`,
+        'Close',
+        {
+          duration: 3000,
+          verticalPosition: 'top',
+          horizontalPosition: 'right',
+        }
+      );
+      return;
+    }
+
     const requestBody: AddReservation = {
       customerName: this.customerName,
       contactNumber: this.contactNumber,
-      guestCount: this.guestCount, // Assuming guestCount is a form field
-      reservationDate: this.reservationDate, // Assuming reservationDate is a form field
-      fromTime: this.fromTime, // Assuming fromTime is a form field
-      toTime: this.toTime, // Assuming toTime is a form field
-      tableId: this.tableID // Assuming tableId is passed or available in the form
+      guestCount: this.guestCount,
+      reservationDate: this.reservationDate,
+      fromTime: this.fromTime,
+      toTime: this.toTime,
+      tableId: this.tableID,
     };
-  
-      // Handle form submission logic, such as calling a service to post the data to the backend
-  this.restaurantService.submitReservation(requestBody).subscribe(response => {
-    // Handle the response after submitting the reservation
-    console.log('Reservation response:', response);
-  });
-  }
 
-  ngOnDestroy(): void {
-    this.tableDataSubscription.unsubscribe();
+    this.restaurantService.submitReservation(requestBody).subscribe({
+      next: (response) => {
+        this.snackBar.open(
+          `Table reserved successfully.`,
+          'Close',
+          {
+            duration: 3000,
+            verticalPosition: 'top',
+            horizontalPosition: 'right',
+          }
+        );
+        this.dialogRef.close(); 
+      },
+      error: (error) => {
+        this.snackBar.open(
+          error,
+          'Close',
+          {
+            duration: 3000,
+            verticalPosition: 'top',
+            horizontalPosition: 'right',
+          }
+        );
+      }
+    });
   }
 }
