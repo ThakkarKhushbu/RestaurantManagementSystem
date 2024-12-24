@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
 import { DialogRef, DialogService } from '@progress/kendo-angular-dialog';
 import { GridDataResult, GridModule } from '@progress/kendo-angular-grid';
 import { ReservationFormComponent } from '../reservation-form/reservation-form.component';
@@ -8,17 +7,22 @@ import { RestaurantService } from '../../services/restaurant.service';
 import { Table } from '../../models/table';
 import {  HttpClientModule } from '@angular/common/http';
 import { NumericTextBoxModule } from '@progress/kendo-angular-inputs';
+import { FormsModule, NgForm } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-table-list',
-  imports: [GridModule,CommonModule,HttpClientModule,NumericTextBoxModule],
+  imports: [GridModule,CommonModule,HttpClientModule,NumericTextBoxModule,FormsModule],
   providers:[RestaurantService],
   templateUrl: './table-list.component.html',
   styleUrl: './table-list.component.scss',
   standalone:true
 })
 export class TableListComponent implements OnInit {
-  constructor(private dialogService: DialogService,private restaurantService: RestaurantService) {}
+  toTime: any;
+  fromTime: any;
+  reservationDate : any;
+  constructor(private dialogService: DialogService,private restaurantService: RestaurantService,private snackBar: MatSnackBar) {}
   
   title = 'restaurant-management';
   public tableId: string | null = null;
@@ -74,5 +78,39 @@ export class TableListComponent implements OnInit {
     }
     this.loadItems(value);
     }
-  
+    
+  submitForm(form:NgForm): void {
+    debugger
+      if(form.invalid){
+        return;
+      }
+      
+      if (this.toTime < this.fromTime) {
+        this.snackBar.open(
+          `From time cannot be greater than To Time.`,
+          'Close',
+          {
+            duration: 3000,
+            verticalPosition: 'top',
+            horizontalPosition: 'right',
+          }
+        );
+        return;
+      }
+      this.restaurantService.getTables(
+        this.reservationDate,
+        this.fromTime,
+        this.toTime,
+      ).subscribe({
+        next: (response) => {
+          this.gridData = {
+            data: response,
+            total: response.length 
+          };
+        },
+        error: (error) => {
+          console.error('Error fetching tables:', error);
+        }
+      });
+    }
 }

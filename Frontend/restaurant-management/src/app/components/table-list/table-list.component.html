@@ -1,3 +1,40 @@
+<div class="reservation-container">
+  <form (ngSubmit)="submitForm(reservationForm)" #reservationForm="ngForm" class="reservation-form">
+    <div class="k-form-field">
+      <label for="reservationDate">Reservation Date:</label>
+      <input
+        id="reservationDate"
+        type="date"
+        class="k-textbox"
+        [(ngModel)]="reservationDate"
+        name="reservationDate"
+        required
+      />
+      <div *ngIf="reservationForm.submitted && !reservationDate" class="error-message">
+        Reservation Date is required.
+      </div>
+    </div>
+
+    <div class="k-form-field">
+      <label for="fromTime">From Time:</label>
+      <input id="fromTime" type="time" class="k-textbox" [(ngModel)]="fromTime" name="fromTime" required />
+      <div *ngIf="reservationForm.submitted && !fromTime" class="error-message">
+        From Time is required.
+      </div>
+    </div>
+
+    <div class="k-form-field">
+      <label for="toTime">To Time:</label>
+      <input id="toTime" type="time" class="k-textbox" [(ngModel)]="toTime" name="toTime" required />
+      <div *ngIf="reservationForm.submitted && !toTime" class="error-message">
+        To Time is required.
+      </div>
+    </div>
+
+    <button type="submit" kendoButton class="submit-button">Submit</button>
+  </form>
+</div>
+
 <kendo-grid 
   [data]="gridData.data" 
   [pageSize]="pageSize" 
