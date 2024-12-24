@@ -1,4 +1,4 @@
-﻿namespace RestaurantManagementSystem.Models.DTOs
+﻿namespace RestaurantManagementSystem.Models.Filters
 {
     public class Filters
     {
