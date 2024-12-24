@@ -25,6 +25,8 @@ The **Restaurant Management System** is a simple web application built with **An
 - Build the project: dotnet build
 - Run the application: dotnet run
 ### Front End Setup
+- Use 22.0 for Node.js version
+- Do required setup for Angular 19 project 
 - Navigate to the project directory: cd Frontend\restaurant-management
 - Run Npm i : It will install node modules based on package.json file configuration.
 - Run Npm Start
