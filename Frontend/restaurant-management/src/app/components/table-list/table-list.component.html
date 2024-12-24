@@ -1,10 +1,36 @@
-<kendo-grid [data]="gridData.data"  [pageSize]="pageSize" [skip]="skip">
-  <kendo-grid-column field="tableNumber" title="Table No."></kendo-grid-column>
-  <kendo-grid-column field="location" title="Location"></kendo-grid-column>
-  <kendo-grid-column field="seatingCapacity" title="Seats"></kendo-grid-column>
+<kendo-grid 
+  [data]="gridData.data" 
+  [pageSize]="pageSize" 
+  [skip]="skip"
+  [filterable]="true">
+  
+  <kendo-grid-column 
+    field="tableNumber" 
+    title="Table No." 
+    [filterable]="false">
+  </kendo-grid-column>
+  
+  <kendo-grid-column 
+    field="location" 
+    title="Location" 
+    [filterable]="false">
+  </kendo-grid-column>
+  
+  <kendo-grid-column 
+    field="seatingCapacity" 
+    title="Seats" 
+    [filterable]="true">
+    <ng-template kendoGridFilterCellTemplate let-column="column" let-filter="filter">
+      <kendo-numerictextbox [min]="1"
+        [value]="filter?.filters[0]?.value" 
+        (valueChange)="onFilterChange($event, column)">
+      </kendo-numerictextbox>
+    </ng-template>
+  </kendo-grid-column>
+  
   <kendo-grid-column title="Action">
     <ng-template kendoGridCellTemplate let-dataItem>
-      <button kendoButton (click)="reserveTable(dataItem)">Reserve</button>
+      <button kendoButton class="submit-button" (click)="openDialog(dataItem)">Reserve</button>
     </ng-template>
   </kendo-grid-column>
 </kendo-grid>

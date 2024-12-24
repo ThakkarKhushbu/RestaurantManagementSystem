@@ -14,7 +14,7 @@
    
     <div class="k-form-field">
   <label for="contactNumber">Contact Number:</label>
-  <input id="contactNumber" type="text" class="k-textbox" [(ngModel)]="contactNumber" name="contactNumber" required />
+  <input id="contactNumber" type="text" class="k-textbox" [(ngModel)]="contactNumber" name="contactNumber" required [maxlength]="11" />
   <div *ngIf="reservationForm.submitted && !contactNumber" class="error-message">
         Contact Number is required.
   </div>
@@ -22,18 +22,26 @@
    
     <div class="k-form-field">
   <label for="guestCount">Guest Count:</label>
-  <input id="guestCount" type="number" class="k-textbox" [(ngModel)]="guestCount" name="guestCount" required />
+  <input id="guestCount" type="number" class="k-textbox" [(ngModel)]="guestCount" name="guestCount" required [max]="maxGuestCount" [min]="1" />
   <div *ngIf="reservationForm.submitted && !guestCount" class="error-message">
         Guest Count is required.
   </div>
   </div>
    
-    <div class="k-form-field">
-  <label for="reservationDate">Reservation Date:</label>
-  <input id="reservationDate" type="date" class="k-textbox" [(ngModel)]="reservationDate" name="reservationDate" required />
-  <div *ngIf="reservationForm.submitted && !reservationDate" class="error-message">
-        Reservation Date is required.
-  </div>
+  <div class="k-form-field">
+    <label for="reservationDate">Reservation Date:</label>
+    <input
+      id="reservationDate"
+      type="date"
+      class="k-textbox"
+      [(ngModel)]="reservationDate"
+      name="reservationDate"
+      required
+      [min]="minDate"
+    />
+    <div *ngIf="reservationForm.submitted && !reservationDate" class="error-message">
+      Reservation Date is required.
+    </div>
   </div>
    
     <div class="k-form-field">

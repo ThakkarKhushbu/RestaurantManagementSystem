@@ -6,18 +6,19 @@ import { GridDataResult, GridModule } from '@progress/kendo-angular-grid';
 import { ReservationFormComponent } from '../reservation-form/reservation-form.component';
 import { RestaurantService } from '../../services/restaurant.service';
 import { Table } from '../../models/table';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import {  HttpClientModule } from '@angular/common/http';
+import { NumericTextBoxModule } from '@progress/kendo-angular-inputs';
 
 @Component({
   selector: 'app-table-list',
-  imports: [GridModule,CommonModule,HttpClientModule ],
+  imports: [GridModule,CommonModule,HttpClientModule,NumericTextBoxModule],
   providers:[RestaurantService],
   templateUrl: './table-list.component.html',
   styleUrl: './table-list.component.scss',
   standalone:true
 })
 export class TableListComponent implements OnInit {
-  constructor(private router: Router,private dialogService: DialogService,private restaurantService: RestaurantService) {}
+  constructor(private dialogService: DialogService,private restaurantService: RestaurantService) {}
   
   title = 'restaurant-management';
   public tableId: string | null = null;
@@ -33,14 +34,13 @@ export class TableListComponent implements OnInit {
     this.loadItems();
   }
 
-  loadItems(): void {
+  loadItems(capacity?: number): void {
     const requestBody = {
-      date: '2024-12-24',
-      minSeatingCapacity: 0,
+      minSeatingCapacity: capacity || 0, // If capacity is provided, use it; otherwise, use 0
       pageNumber: 1,
       pageSize: 10,
     };
-
+  
     this.restaurantService.getTables(requestBody).subscribe(response => {
       // Mapping the response data to match Kendo Grid's format
       this.gridData = {
@@ -49,19 +49,24 @@ export class TableListComponent implements OnInit {
       };
     });
   }
-
-  reserveTable(dataItem: Table): void {
-    this.restaurantService.setTableData(dataItem);
-    this.openDialog();
-  }
-
-  openDialog(): void {
+  
+  openDialog(dataItem:Table): void {
     this.dialogRef =  this.dialogService.open({
       content: ReservationFormComponent,
       title: "Make a Reservation",
-      width: 600,
-      height: 400,
+      width: 800,
+      height: 750,
       actions: [{ text: 'Close' }]
     });
+    const reservationFormInstance = this.dialogRef.content.instance as ReservationFormComponent;
+    reservationFormInstance.setTableData(dataItem);
   }
+
+  onFilterChange(value: any, column: any): void {
+    if (!column || !column.field) {
+      return;
+    }
+    this.loadItems(value);
+    }
+  
 }
