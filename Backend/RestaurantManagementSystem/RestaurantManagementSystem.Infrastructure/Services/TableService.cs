@@ -97,7 +97,7 @@ namespace RestaurantManagementSystem.Infrastructure.Services
                     Location = x.Location,
                     TableNumber = x.TableNumber,
                     SeatingCapacity = x.SeatingCapacity,
-                    Reservations = reservationQuery.Where(x => x.TableId == x.Id).ToList()
+                    Reservations = reservationQuery.Where(r => r.TableId.HasValue && r.TableId.Equals(x.Id)).ToList()
                 }).ToList();
 
                 return tables;
